@@ -21,7 +21,7 @@ function App(): React.JSX.Element {
   return (
     <SafeAreaView style={backgroundStyle}>
       <View>
-        <Text>Hello World!</Text>
+        <Text>Hello World</Text>
       </View>
     </SafeAreaView>
   );
