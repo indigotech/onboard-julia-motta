@@ -7,7 +7,7 @@
 
 import React from 'react';
 
-import {Login} from './login';
+import {Login} from './login-page';
 
 function App(): React.JSX.Element {
   return <Login />;
