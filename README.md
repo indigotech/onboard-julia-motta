@@ -10,4 +10,4 @@
     Xcode version 15.1;
     Programming language: Typescript 
 
--Steps to run and debug: Go to the "onboard-julia" project folder and run the npm start command. When it has started, click on the 'i' key to run on IOS or 'a' to run on Android, or type "npm run ios" and "npm run android", to run on ios or android, respectively.
+-Steps to run and debug: Go to the "onboard-julia" project folder and run the npm install and then the npm start commands. When it has started, click on the 'i' key to run on IOS or 'a' to run on Android, or type "npm run ios" and "npm run android", to run on ios or android, respectively.
