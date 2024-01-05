@@ -12,10 +12,13 @@ export function Login(): React.JSX.Element {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Bem-vindo(a) à Taqtile!</Text>
+
       <Text>E-mail</Text>
       <TextInput style={styles.input} />
+
       <Text>Senha</Text>
       <TextInput style={styles.input} secureTextEntry />
+
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
