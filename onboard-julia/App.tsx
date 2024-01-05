@@ -7,24 +7,10 @@
 
 import React from 'react';
 
-import {SafeAreaView, Text, useColorScheme, View} from 'react-native';
-
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {Login} from './login-page';
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <View>
-        <Text>Hello World</Text>
-      </View>
-    </SafeAreaView>
-  );
+  return <Login />;
 }
 
 export default App;
