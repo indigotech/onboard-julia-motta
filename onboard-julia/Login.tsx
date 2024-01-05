@@ -1,4 +1,5 @@
-import React = require('react');
+import React from 'react';
+
 import {
   View,
   Text,
@@ -7,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-function Login(): React.JSX.Element {
+export function Login(): React.JSX.Element {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Bem-vindo(a) à Taqtile!</Text>
@@ -55,5 +56,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
-export default Login;
