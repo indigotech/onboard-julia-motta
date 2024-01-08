@@ -98,7 +98,10 @@ export function Login(): React.JSX.Element {
         secureTextEntry
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleLoginPress}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleLoginPress}
+        disabled={loading}>
         <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
 
