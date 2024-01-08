@@ -1,4 +1,7 @@
 import React, {useState} from 'react';
+import {gql} from '@apollo/client';
+import {client} from './apollo-client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   View,
@@ -12,6 +15,14 @@ import {
 export function Login(): React.JSX.Element {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+
+  const LOGIN_USER = gql`
+    mutation LoginUser($email: String!, $password: String!) {
+      login(data: {email: $email, password: $password}) {
+        token
+      }
+    }
+  `;
 
   const handleLoginPress = () => {
     if (!isValidEmail(email)) {
@@ -30,11 +41,36 @@ export function Login(): React.JSX.Element {
         'As senhas devem ter no mínimo uma letra e um número',
       );
       return;
+    } else {
+      client
+        .mutate({
+          mutation: LOGIN_USER,
+          variables: {
+            email,
+            password,
+          },
+        })
+        .then(async response => {
+          if (response.data === null) {
+            const error = response.errors ? response.errors[0] : null;
+            if (error) {
+              console.error('GraphQL Error:', error.message);
+              Alert.alert(`GraphQL Error: ${error.message}`);
+            }
+          } else {
+            const token = response.data.login.token;
+            await AsyncStorage.setItem('authToken', token);
+            console.log('Token: ', token);
+            Alert.alert('Sucesso', 'Login efetuado com sucesso.');
+          }
+        })
+        .catch(error => console.error(error));
+      return;
     }
   };
 
   const isValidEmail = (email: string): boolean => {
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.com$/;
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.com.br$/;
     return email.trim() !== '' && emailRegex.test(email);
   };
 
@@ -48,7 +84,12 @@ export function Login(): React.JSX.Element {
       <Text style={styles.title}>Bem-vindo(a) à Taqtile!</Text>
 
       <Text>E-mail</Text>
-      <TextInput style={styles.input} value={email} onChangeText={setEmail} />
+      <TextInput
+        style={styles.input}
+        value={email}
+        onChangeText={setEmail}
+        autoCapitalize="none"
+      />
 
       <Text>Senha</Text>
       <TextInput
