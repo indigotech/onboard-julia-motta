@@ -9,24 +9,16 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Login} from './login-page';
-import {View, Text} from 'react-native';
+import {UsersList} from './users-list';
 
 const Stack = createNativeStackNavigator();
-
-function NewScreen() {
-  return (
-    <View>
-      <Text>New Screen</Text>
-    </View>
-  );
-}
 
 function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Blank" component={NewScreen} />
+        <Stack.Screen name="Users List" component={UsersList} />
       </Stack.Navigator>
     </NavigationContainer>
   );
