@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {isValidEmail, isValidPassword} from './login-validation';
 
 import {
   View,
@@ -31,16 +32,6 @@ export function Login(): React.JSX.Element {
       );
       return;
     }
-  };
-
-  const isValidEmail = (email: string): boolean => {
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.com$/;
-    return email.trim() !== '' && emailRegex.test(email);
-  };
-
-  const isValidPassword = (password: string): boolean => {
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)/;
-    return passwordRegex.test(password);
   };
 
   return (
