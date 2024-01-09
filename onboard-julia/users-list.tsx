@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, Text, View} from 'react-native';
+import {ActivityIndicator, FlatList, Text, View} from 'react-native';
 import {styles} from './styles';
 import {getUsersList} from './get-users-list';
 
@@ -20,33 +20,55 @@ const UserItem: React.FC<{user: User}> = ({user}) => {
 
 export function UsersList(): React.JSX.Element {
   const [usersList, setUsersList] = useState<User[]>([]);
+  const [offset, setOffset] = useState<number>(0);
+  const [limit, setLimit] = useState<number>(20);
+  const [hasNextPage, setHasNextPage] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const fetchData = async () => {
+    try {
+      setIsLoading(true);
+      const usersListData = await getUsersList(offset);
+
+      if (usersListData && usersListData.nodes && usersListData.pageInfo) {
+        setUsersList(prevUsers => [...prevUsers, ...usersListData.nodes]);
+        setHasNextPage(usersListData.pageInfo.hasNextPage);
+        setLimit(usersListData.pageInfo.limit);
+      } else {
+        console.error('Error: usersListData is missing.');
+      }
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const usersListData = await getUsersList();
-        if (usersListData && usersListData.nodes) {
-          setUsersList(usersListData.nodes);
-        } else {
-          console.error('Error: usersListData.nodes is missing.');
-        }
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      }
-    };
-
     fetchData();
-  }, []);
+  }, [offset, limit]); // Run when offset or limit changes
+
+  const handleEndReached = () => {
+    if (hasNextPage) {
+      setOffset(prevOffset => prevOffset + limit);
+    }
+  };
 
   return (
     <View>
       <View style={styles.container}>
         <Text style={styles.usersTitle}>Lista de Usuários</Text>
       </View>
+
       <FlatList
         data={usersList}
         keyExtractor={user => user.id.toString()}
         renderItem={({item}) => <UserItem user={item} />}
+        onEndReached={handleEndReached}
+        onEndReachedThreshold={0.1}
+        ListFooterComponent={() =>
+          isLoading ? <ActivityIndicator size="large" color="#0000ff" /> : null
+        }
       />
     </View>
   );
