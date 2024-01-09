@@ -4,6 +4,7 @@ import {styles} from './styles';
 import {gql} from '@apollo/client';
 import {client} from './apollo-client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
 
 import {
   View,
@@ -26,6 +27,8 @@ export function Login(): React.JSX.Element {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+
+  const navigation = useNavigation();
 
   const handleLoginPress = () => {
     if (!isValidEmail(email)) {
@@ -68,6 +71,7 @@ export function Login(): React.JSX.Element {
           await AsyncStorage.setItem('authToken', token);
           console.log('Token: ', token);
           Alert.alert('Sucesso', 'Login efetuado com sucesso.');
+          navigation.navigate('Blank');
         }
       })
       .catch(error => console.error(error))
@@ -94,7 +98,10 @@ export function Login(): React.JSX.Element {
         secureTextEntry
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleLoginPress}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleLoginPress}
+        disabled={loading}>
         <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
 
