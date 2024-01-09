@@ -1,19 +1,13 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, Text, View} from 'react-native';
 import {styles} from './styles';
+import {getUsersList} from './get-users-list';
 
 interface User {
   id: number;
   name: string;
   email: string;
 }
-
-const usersList: User[] = [
-  {id: 1, name: 'João', email: 'joao@mail.com.br'},
-  {id: 2, name: 'Maria', email: 'maria@mail.com.br'},
-  {id: 3, name: 'Ana', email: 'ana@mail.com.br'},
-  {id: 4, name: 'Lucas', email: 'lucas@mail.com.br'},
-];
 
 const UserItem: React.FC<{user: User}> = ({user}) => {
   return (
@@ -24,7 +18,26 @@ const UserItem: React.FC<{user: User}> = ({user}) => {
   );
 };
 
-export const UsersList: React.FC = () => {
+export function UsersList(): React.JSX.Element {
+  const [usersList, setUsersList] = useState<User[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const usersListData = await getUsersList();
+        if (usersListData && usersListData.nodes) {
+          setUsersList(usersListData.nodes);
+        } else {
+          console.error('Error: usersListData.nodes is missing.');
+        }
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <View>
       <View style={styles.container}>
@@ -37,4 +50,4 @@ export const UsersList: React.FC = () => {
       />
     </View>
   );
-};
+}

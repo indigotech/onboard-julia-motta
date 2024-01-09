@@ -40,11 +40,11 @@ export const styles = StyleSheet.create({
     borderBottomColor: '#ccc',
   },
   name: {
-    fontSize: 18,
+    fontSize: 10,
     fontWeight: 'bold',
   },
   email: {
-    fontSize: 14,
+    fontSize: 10,
     color: '#555',
   },
   listContainer: {
@@ -53,7 +53,7 @@ export const styles = StyleSheet.create({
   usersTitle: {
     fontSize: 30,
     fontWeight: 'bold',
-    marginTop: '10%',
-    marginBottom: '10%',
+    marginTop: '5%',
+    marginBottom: '5%',
   },
 });
