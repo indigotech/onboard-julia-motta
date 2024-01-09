@@ -46,7 +46,7 @@ export function UsersList(): React.JSX.Element {
 
   useEffect(() => {
     fetchData();
-  }, [offset, limit]); // Run when offset or limit changes
+  }, [offset, limit]);
 
   const handleEndReached = () => {
     if (hasNextPage) {
