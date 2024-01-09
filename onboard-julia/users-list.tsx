@@ -62,7 +62,7 @@ export function UsersList(): React.JSX.Element {
 
       <FlatList
         data={usersList}
-        keyExtractor={user => user.id.toString()}
+        keyExtractor={(user, index) => `${user.id}_${index}`} // Ensure unique keys
         renderItem={({item}) => <UserItem user={item} />}
         onEndReached={handleEndReached}
         onEndReachedThreshold={0.1}
