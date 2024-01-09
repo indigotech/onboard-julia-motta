@@ -71,7 +71,7 @@ export function Login(): React.JSX.Element {
           await AsyncStorage.setItem('authToken', token);
           console.log('Token: ', token);
           Alert.alert('Sucesso', 'Login efetuado com sucesso.');
-          navigation.navigate('Blank');
+          navigation.navigate('Users List');
         }
       })
       .catch(error => console.error(error))

@@ -32,4 +32,28 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  usersContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  name: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  email: {
+    fontSize: 14,
+    color: '#555',
+  },
+  listContainer: {
+    justifyContent: 'center',
+  },
+  usersTitle: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    marginTop: '10%',
+    marginBottom: '10%',
+  },
 });
