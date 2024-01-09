@@ -25,7 +25,11 @@ export function UsersList(): React.JSX.Element {
     const fetchData = async () => {
       try {
         const usersListData = await getUsersList();
-        setUsersList(usersListData.nodes);
+        if (usersListData && usersListData.nodes) {
+          setUsersList(usersListData.nodes);
+        } else {
+          console.error('Error: usersListData.nodes is missing.');
+        }
       } catch (error) {
         console.error('Error fetching users:', error);
       }

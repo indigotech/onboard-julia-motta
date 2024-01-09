@@ -27,11 +27,7 @@ export const getUsersList = async () => {
       },
     });
 
-    if (data && data.users) {
-      return data.users;
-    } else {
-      return [];
-    }
+    return data?.users ?? [];
   } catch (error) {
     console.error('Error fetching users:', error);
     return [];
