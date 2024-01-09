@@ -56,18 +56,4 @@ export const styles = StyleSheet.create({
     marginTop: '5%',
     marginBottom: '5%',
   },
-  loadMoreContainer: {
-    alignItems: 'center',
-    marginVertical: 16,
-  },
-  loadMoreButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: '#3498db',
-    borderRadius: 5,
-  },
-  loadMoreButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
 });
