@@ -21,32 +21,30 @@ const UserItem: React.FC<{user: User}> = ({user}) => {
 export function UsersList(): React.JSX.Element {
   const [usersList, setUsersList] = useState<User[]>([]);
   const [offset, setOffset] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(20);
+  let limit = 20;
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const fetchData = async () => {
-    try {
-      setIsLoading(true);
-      const usersListData = await getUsersList(offset);
-
-      if (usersListData && usersListData.nodes && usersListData.pageInfo) {
-        setUsersList(prevUsers => [...prevUsers, ...usersListData.nodes]);
-        setHasNextPage(usersListData.pageInfo.hasNextPage);
-        setLimit(usersListData.pageInfo.limit);
-      } else {
-        console.error('Error: usersListData is missing.');
-      }
-    } catch (error) {
-      console.error('Error fetching users:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const usersListData = await getUsersList(offset);
+
+        if (usersListData && usersListData.nodes && usersListData.pageInfo) {
+          setUsersList(prevUsers => [...prevUsers, ...usersListData.nodes]);
+          setHasNextPage(usersListData.pageInfo.hasNextPage);
+        } else {
+          console.error('Error: usersListData is missing.');
+        }
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
     fetchData();
-  }, [offset, limit]);
+  }, [offset]);
 
   const handleEndReached = () => {
     if (hasNextPage) {
