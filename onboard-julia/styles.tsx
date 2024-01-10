@@ -56,4 +56,12 @@ export const styles = StyleSheet.create({
     marginTop: '5%',
     marginBottom: '5%',
   },
+  addButton: {
+    marginRight: 16,
+    padding: 10,
+  },
+  addButtonText: {
+    color: '#3498db',
+    fontWeight: 'bold',
+  },
 });
