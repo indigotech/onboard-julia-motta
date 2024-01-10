@@ -5,6 +5,7 @@ import {
   isValidBirthdate,
   isValidEmail,
   isValidName,
+  isValidPassword,
   isValidPhone,
   isValidRole,
 } from './user-validation';
@@ -15,10 +16,16 @@ export function AddUser(): React.JSX.Element {
   const [birthdate, setBirthdate] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [role, setRole] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
   const handleAddUserPress = () => {
     if (!isValidName(name)) {
       Alert.alert('Erro', 'Por favor, insira um nome válido.');
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      Alert.alert('Erro', 'Por favor, insira um e-mail válido.');
       return;
     }
 
@@ -32,8 +39,16 @@ export function AddUser(): React.JSX.Element {
       return;
     }
 
-    if (!isValidEmail(email)) {
-      Alert.alert('Erro', 'Por favor, insira um e-mail válido.');
+    if (password.length < 7) {
+      Alert.alert('Erro', 'As senhas devem ter no mínimo 7 caracteres.');
+      return;
+    }
+
+    if (!isValidPassword(password)) {
+      Alert.alert(
+        'Erro',
+        'As senhas devem ter no mínimo uma letra e um número',
+      );
       return;
     }
 
@@ -53,6 +68,14 @@ export function AddUser(): React.JSX.Element {
       <Text>Nome</Text>
       <TextInput style={styles.input} value={name} onChangeText={setName} />
 
+      <Text>E-mail</Text>
+      <TextInput
+        style={styles.input}
+        value={email}
+        onChangeText={setEmail}
+        autoCapitalize="none"
+      />
+
       <Text>Telefone</Text>
       <TextInput style={styles.input} value={phone} onChangeText={setPhone} />
 
@@ -64,12 +87,12 @@ export function AddUser(): React.JSX.Element {
         onChangeText={setBirthdate}
       />
 
-      <Text>E-mail</Text>
+      <Text>Senha</Text>
       <TextInput
         style={styles.input}
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
       />
 
       <Text>Role</Text>
