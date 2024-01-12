@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {isValidEmail, isValidPassword} from './login-validation';
+import {isValidEmail, isValidPassword} from './user-validation';
 import {styles} from './styles';
 import {gql} from '@apollo/client';
 import {client} from './apollo-client';

@@ -56,4 +56,33 @@ export const styles = StyleSheet.create({
     marginTop: '5%',
     marginBottom: '5%',
   },
+  addButton: {
+    marginRight: 16,
+    padding: 10,
+  },
+  addButtonText: {
+    color: '#3498db',
+    fontWeight: 'bold',
+  },
+  radioGroup: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  radioButtonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  radioButton: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#BC8F8F',
+    marginRight: 8,
+    marginLeft: '5%',
+  },
+  radioButtonChecked: {
+    backgroundColor: '#BC8F8F',
+  },
 });

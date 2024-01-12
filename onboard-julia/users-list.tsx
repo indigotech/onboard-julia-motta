@@ -1,7 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, FlatList, Text, View} from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {styles} from './styles';
 import {getUsersList} from './get-users-list';
+import {useNavigation} from '@react-navigation/native';
 
 interface User {
   id: number;
@@ -24,6 +31,22 @@ export function UsersList(): React.JSX.Element {
   let limit = 20;
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const navigation = useNavigation();
+
+  const navigateToAddUser = () => {
+    navigation.navigate('Add User');
+  };
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={navigateToAddUser} style={styles.addButton}>
+          <Text style={styles.addButtonText}>Add User</Text>
+        </TouchableOpacity>
+      ),
+    });
+  });
 
   useEffect(() => {
     const fetchData = async () => {
