@@ -7,7 +7,6 @@ import {
   isValidName,
   isValidPassword,
   isValidPhone,
-  isValidRole,
 } from './user-validation';
 import {CustomRadioButton} from './custom-radio-button';
 
@@ -16,7 +15,7 @@ export function AddUser(): React.JSX.Element {
   const [phone, setPhone] = useState<string>('');
   const [birthdate, setBirthdate] = useState<string>('');
   const [email, setEmail] = useState<string>('');
-  const [role, setRole] = useState<string>('');
+  const [role, setRole] = useState<'admin' | 'user' | null>(null);
   const [password, setPassword] = useState<string>('');
 
   const handleAddUserPress = () => {
@@ -53,8 +52,8 @@ export function AddUser(): React.JSX.Element {
       return;
     }
 
-    if (!isValidRole(role)) {
-      Alert.alert('Erro', 'Por favor, insira um cargo válido.');
+    if (!role) {
+      Alert.alert('Erro', 'Por favor, selecione um cargo.');
       return;
     }
 
