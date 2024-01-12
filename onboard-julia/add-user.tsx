@@ -9,6 +9,7 @@ import {
   isValidPhone,
   isValidRole,
 } from './user-validation';
+import {CustomRadioButton} from './custom-radio-button';
 
 export function AddUser(): React.JSX.Element {
   const [name, setName] = useState<string>('');
@@ -53,7 +54,7 @@ export function AddUser(): React.JSX.Element {
     }
 
     if (!isValidRole(role)) {
-      Alert.alert('Erro', 'Por favor, insira um role válido.');
+      Alert.alert('Erro', 'Por favor, insira um cargo válido.');
       return;
     }
 
@@ -95,13 +96,19 @@ export function AddUser(): React.JSX.Element {
         secureTextEntry
       />
 
-      <Text>Role</Text>
-      <TextInput
-        style={styles.input}
-        value={role}
-        onChangeText={setRole}
-        autoCapitalize="none"
-      />
+      <Text>Cargo</Text>
+      <View style={styles.radioGroup}>
+        <CustomRadioButton
+          label="Administrador"
+          checked={role === 'admin'}
+          onPress={() => setRole('admin')}
+        />
+        <CustomRadioButton
+          label="Usuário"
+          checked={role === 'user'}
+          onPress={() => setRole('user')}
+        />
+      </View>
 
       <TouchableOpacity style={styles.button} onPress={handleAddUserPress}>
         <Text style={styles.buttonText}>Adicionar Usuário</Text>
