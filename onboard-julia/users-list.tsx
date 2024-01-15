@@ -16,12 +16,20 @@ interface User {
   email: string;
 }
 
-const UserItem: React.FC<{user: User}> = ({user}) => {
+const UserItem: React.FC<{user: User; navigation: any}> = ({
+  user,
+  navigation,
+}) => {
+  const handlePress = () => {
+    navigation.navigate('User Details', {
+      paramKey: user.id,
+    });
+  };
   return (
-    <View style={styles.usersContainer}>
+    <TouchableOpacity style={styles.usersContainer} onPress={handlePress}>
       <Text style={styles.name}>{user.name}</Text>
       <Text style={styles.email}>{user.email}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -84,7 +92,9 @@ export function UsersList(): React.JSX.Element {
       <FlatList
         data={usersList}
         keyExtractor={(user, index) => `${user.id}_${index}`}
-        renderItem={({item}) => <UserItem user={item} />}
+        renderItem={({item}) => (
+          <UserItem user={item} navigation={navigation} />
+        )}
         onEndReached={handleEndReached}
         onEndReachedThreshold={0.1}
         ListFooterComponent={() =>

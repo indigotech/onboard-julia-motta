@@ -85,4 +85,22 @@ export const styles = StyleSheet.create({
   radioButtonChecked: {
     backgroundColor: '#BC8F8F',
   },
+  detailsContainer: {
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    marginHorizontal: 20,
+  },
+  detailsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 5,
+  },
+  detailsTitle: {
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  details: {
+    fontSize: 15,
+    marginLeft: 5,
+  },
 });
