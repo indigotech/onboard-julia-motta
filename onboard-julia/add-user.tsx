@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {Alert, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {styles} from './styles';
 import {
   isValidBirthdate,
@@ -9,6 +16,8 @@ import {
   isValidPhone,
 } from './user-validation';
 import {CustomRadioButton} from './custom-radio-button';
+import {useNavigation} from '@react-navigation/native';
+import {createUser} from './create-user';
 
 export function AddUser(): React.JSX.Element {
   const [name, setName] = useState<string>('');
@@ -17,8 +26,10 @@ export function AddUser(): React.JSX.Element {
   const [email, setEmail] = useState<string>('');
   const [role, setRole] = useState<'admin' | 'user' | null>(null);
   const [password, setPassword] = useState<string>('');
+  const navigation = useNavigation();
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const handleAddUserPress = () => {
+  const handleAddUserPress = async () => {
     if (!isValidName(name)) {
       Alert.alert('Erro', 'Por favor, insira um nome válido.');
       return;
@@ -56,9 +67,20 @@ export function AddUser(): React.JSX.Element {
       Alert.alert('Erro', 'Por favor, selecione um cargo.');
       return;
     }
+    setLoading(true);
+    await createUser({
+      name: name,
+      email: email,
+      phone: phone,
+      birthDate: birthdate,
+      password: password,
+      role: role,
+    });
 
-    Alert.alert('Sucesso', 'Usuário adicionado com sucesso.');
-    return;
+    Alert.alert('Sucesso', 'Usuário criado com sucesso');
+    navigation.navigate('Users List');
+
+    setLoading(false);
   };
 
   return (
@@ -112,6 +134,8 @@ export function AddUser(): React.JSX.Element {
       <TouchableOpacity style={styles.button} onPress={handleAddUserPress}>
         <Text style={styles.buttonText}>Adicionar Usuário</Text>
       </TouchableOpacity>
+
+      {loading && <ActivityIndicator size="large" color="#0000ff" />}
     </View>
   );
 }

@@ -28,7 +28,7 @@ const UserItem: React.FC<{user: User}> = ({user}) => {
 export function UsersList(): React.JSX.Element {
   const [usersList, setUsersList] = useState<User[]>([]);
   const [offset, setOffset] = useState<number>(0);
-  let limit = 20;
+  const limit = 20;
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -71,7 +71,7 @@ export function UsersList(): React.JSX.Element {
 
   const handleEndReached = () => {
     if (hasNextPage) {
-      setOffset(prevOffset => prevOffset + limit);
+      setOffset(offset + limit);
     }
   };
 
