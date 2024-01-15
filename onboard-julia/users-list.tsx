@@ -16,14 +16,14 @@ interface User {
   email: string;
 }
 
-const UserItem: React.FC<{user: User}> = ({user}) => {
+const UserItem: React.FC<{user: User}> = React.memo(({user}) => {
   return (
     <View style={styles.usersContainer}>
       <Text style={styles.name}>{user.name}</Text>
       <Text style={styles.email}>{user.email}</Text>
     </View>
   );
-};
+});
 
 export function UsersList(): React.JSX.Element {
   const [usersList, setUsersList] = useState<User[]>([]);
@@ -31,6 +31,7 @@ export function UsersList(): React.JSX.Element {
   let limit = 20;
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
   const navigation = useNavigation();
 
@@ -64,15 +65,21 @@ export function UsersList(): React.JSX.Element {
         console.error('Error fetching users:', error);
       } finally {
         setIsLoading(false);
+        setIsRefreshing(false);
       }
     };
     fetchData();
-  }, [offset]);
+  }, [offset, isRefreshing]);
 
   const handleEndReached = () => {
     if (hasNextPage) {
       setOffset(prevOffset => prevOffset + limit);
     }
+  };
+
+  const handleRefresh = () => {
+    setOffset(0);
+    setIsRefreshing(true);
   };
 
   return (
@@ -90,6 +97,8 @@ export function UsersList(): React.JSX.Element {
         ListFooterComponent={() =>
           isLoading ? <ActivityIndicator size="large" color="#0000ff" /> : null
         }
+        onRefresh={handleRefresh}
+        refreshing={isRefreshing}
       />
     </View>
   );
