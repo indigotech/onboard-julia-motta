@@ -35,7 +35,7 @@ export const getUsersList = async (offset: number) => {
       },
     });
 
-    return data?.users ?? [];
+    return data?.users ?? null;
   } catch (error) {
     console.error('Error fetching users:', error);
     return [];

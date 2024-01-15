@@ -28,10 +28,9 @@ const UserItem: React.FC<{user: User}> = ({user}) => {
 export function UsersList(): React.JSX.Element {
   const [usersList, setUsersList] = useState<User[]>([]);
   const [offset, setOffset] = useState<number>(0);
-  let limit = 20;
+  const limit = 20;
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
   const navigation = useNavigation();
 
@@ -65,21 +64,15 @@ export function UsersList(): React.JSX.Element {
         console.error('Error fetching users:', error);
       } finally {
         setIsLoading(false);
-        setIsRefreshing(false);
       }
     };
     fetchData();
-  }, [offset, isRefreshing]);
+  }, [offset]);
 
   const handleEndReached = () => {
     if (hasNextPage) {
-      setOffset(prevOffset => prevOffset + limit);
+      setOffset(offset + limit);
     }
-  };
-
-  const handleRefresh = () => {
-    setOffset(0);
-    setIsRefreshing(true);
   };
 
   return (
@@ -97,8 +90,6 @@ export function UsersList(): React.JSX.Element {
         ListFooterComponent={() =>
           isLoading ? <ActivityIndicator size="large" color="#0000ff" /> : null
         }
-        onRefresh={handleRefresh}
-        refreshing={isRefreshing}
       />
     </View>
   );
