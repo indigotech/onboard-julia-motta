@@ -28,7 +28,6 @@ export function AddUser(): React.JSX.Element {
   const [password, setPassword] = useState<string>('');
   const navigation = useNavigation();
   const [loading, setLoading] = useState<boolean>(false);
-  const [id, setId] = useState(null);
 
   const handleAddUserPress = async () => {
     if (!isValidName(name)) {
@@ -69,25 +68,19 @@ export function AddUser(): React.JSX.Element {
       return;
     }
     setLoading(true);
-    try {
-      const idUser = await createUser(
-        name,
-        email,
-        phone,
-        birthdate,
-        password,
-        role,
-      );
+    await createUser({
+      name: name,
+      email: email,
+      phone: phone,
+      birthDate: birthdate,
+      password: password,
+      role: role,
+    });
 
-      setId(idUser);
-      Alert.alert('Sucesso', 'Usuário criado com sucesso');
-      navigation.navigate('Users List');
-      console.log('Usuário criado:', id);
-    } catch (error) {
-      console.error('Erro ao criar usuário:', error);
-    } finally {
-      setLoading(true);
-    }
+    Alert.alert('Sucesso', 'Usuário criado com sucesso');
+    navigation.navigate('Users List');
+
+    setLoading(false);
   };
 
   return (

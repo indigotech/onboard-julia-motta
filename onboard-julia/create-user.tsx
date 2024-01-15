@@ -2,50 +2,31 @@ import {gql} from '@apollo/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {client} from './apollo-client';
 
+interface UserInput {
+  name: string;
+  email: string;
+  phone: string;
+  birthDate: string;
+  password: string;
+  role: 'admin' | 'user' | null;
+}
+
 const CREATE_USER = gql`
-  mutation AddUser(
-    $name: String!
-    $email: String!
-    $phone: String!
-    $birthDate: DateTime!
-    $password: String!
-    $role: UserRole!
-  ) {
-    createUser(
-      data: {
-        name: $name
-        email: $email
-        phone: $phone
-        birthDate: $birthDate
-        password: $password
-        role: $role
-      }
-    ) {
+  mutation AddUser($userInput: UserInput!) {
+    createUser(data: $userInput) {
       id
     }
   }
 `;
 
-export const createUser = async (
-  name: string,
-  email: string,
-  phone: string,
-  birthDate: string,
-  password: string,
-  role: string,
-) => {
+export const createUser = async (userInput: UserInput) => {
   const token = await AsyncStorage.getItem('authToken');
 
   try {
     const {data} = await client.mutate({
       mutation: CREATE_USER,
       variables: {
-        name: name,
-        email: email,
-        phone: phone,
-        birthDate: birthDate,
-        password: password,
-        role: role,
+        userInput: userInput,
       },
       context: {
         headers: {
@@ -53,7 +34,6 @@ export const createUser = async (
         },
       },
     });
-    console.log(data.createUser.id);
     return data?.createUser?.id ?? null;
   } catch (error) {
     console.error('Error creating user:', error);

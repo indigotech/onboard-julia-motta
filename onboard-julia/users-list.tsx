@@ -16,14 +16,14 @@ interface User {
   email: string;
 }
 
-const UserItem: React.FC<{user: User}> = React.memo(({user}) => {
+const UserItem: React.FC<{user: User}> = ({user}) => {
   return (
     <View style={styles.usersContainer}>
       <Text style={styles.name}>{user.name}</Text>
       <Text style={styles.email}>{user.email}</Text>
     </View>
   );
-});
+};
 
 export function UsersList(): React.JSX.Element {
   const [usersList, setUsersList] = useState<User[]>([]);
