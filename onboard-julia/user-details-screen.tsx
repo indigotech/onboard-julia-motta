@@ -2,7 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, ActivityIndicator} from 'react-native';
 import {styles} from './styles';
 import {RouteProp, useRoute} from '@react-navigation/native';
-import {getUserDetails} from './get-user-details';
+import {useUserDetails} from './get-user-details';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface UserDetailsProps {
   user: {
@@ -53,42 +54,41 @@ type RootStackParamList = {
 type UserDetailsRouteProp = RouteProp<RootStackParamList, 'UserDetails'>;
 
 export function UserDetails(): React.JSX.Element {
-  const [user, setUser] = useState<UserDetailsProps>();
   const route = useRoute<UserDetailsRouteProp>();
   const userId = route.params?.paramKey;
+  const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchToken = async () => {
       try {
-        const userDetails = await getUserDetails(userId);
-
-        if (userDetails) {
-          setUser(userDetails);
-        } else {
-          console.error('Error: userDetails is missing.');
-        }
-      } catch (error) {
-        console.error('Error fetching user:', error);
+        const authToken = await AsyncStorage.getItem('authToken');
+        setToken(authToken);
+      } catch (fetchTokenError) {
+        console.error('Error fetching user details:', fetchTokenError);
       }
     };
-    fetchData();
+    fetchToken();
   }, [userId]);
 
-  if (!user) {
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    );
-  }
+  const {loading, error, user} = useUserDetails(userId, token);
 
+  if (loading) {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
+  if (error || !user) {
+    return <Text>Error loading user details.</Text>;
+  }
   return (
     <View>
       <View style={styles.container}>
         <Text style={styles.usersTitle}>Detalhes do Usuário {userId}</Text>
       </View>
 
-      <Details user={user.user} />
+      {user && user.id ? (
+        <Details user={user} />
+      ) : (
+        <Text>Error loading user details.</Text>
+      )}
     </View>
   );
 }

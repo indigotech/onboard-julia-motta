@@ -1,6 +1,4 @@
-import {gql} from '@apollo/client';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {client} from './apollo-client';
+import {gql, useQuery} from '@apollo/client';
 
 const GET_USER_DETAILS = gql`
   query GetUser($id: ID!) {
@@ -15,25 +13,15 @@ const GET_USER_DETAILS = gql`
   }
 `;
 
-export const getUserDetails = async (id: string) => {
-  const token = await AsyncStorage.getItem('authToken');
-
-  try {
-    const {data} = await client.query({
-      query: GET_USER_DETAILS,
-      variables: {
-        id: id,
+export const useUserDetails = (id: string, token: string | null) => {
+  const {loading, error, data} = useQuery(GET_USER_DETAILS, {
+    variables: {id},
+    context: {
+      headers: {
+        authorization: token,
       },
-      context: {
-        headers: {
-          authorization: token,
-        },
-      },
-    });
-
-    return data ?? null;
-  } catch (error) {
-    console.error('Error fetching user details:', error);
-    return null;
-  }
+    },
+    skip: !token,
+  });
+  return {loading, error, user: data?.user ?? null};
 };
