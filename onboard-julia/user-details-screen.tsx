@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {View, Text, ActivityIndicator} from 'react-native';
 import {styles} from './styles';
 import {RouteProp, useRoute} from '@react-navigation/native';
 import {useUserDetails} from './get-user-details';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface UserDetailsProps {
   user: {
@@ -56,21 +55,8 @@ type UserDetailsRouteProp = RouteProp<RootStackParamList, 'UserDetails'>;
 export function UserDetails(): React.JSX.Element {
   const route = useRoute<UserDetailsRouteProp>();
   const userId = route.params?.paramKey;
-  const [token, setToken] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchToken = async () => {
-      try {
-        const authToken = await AsyncStorage.getItem('authToken');
-        setToken(authToken);
-      } catch (fetchTokenError) {
-        console.error('Error fetching user details:', fetchTokenError);
-      }
-    };
-    fetchToken();
-  }, [userId]);
-
-  const {loading, error, user} = useUserDetails(userId, token);
+  const {loading, error, user} = useUserDetails(userId);
 
   if (loading) {
     return <ActivityIndicator size="large" color="#0000ff" />;

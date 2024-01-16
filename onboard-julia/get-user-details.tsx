@@ -1,4 +1,5 @@
 import {gql, useQuery} from '@apollo/client';
+import {client} from './apollo-client';
 
 const GET_USER_DETAILS = gql`
   query GetUser($id: ID!) {
@@ -13,15 +14,10 @@ const GET_USER_DETAILS = gql`
   }
 `;
 
-export const useUserDetails = (id: string, token: string | null) => {
+export const useUserDetails = (id: string) => {
   const {loading, error, data} = useQuery(GET_USER_DETAILS, {
     variables: {id},
-    context: {
-      headers: {
-        authorization: token,
-      },
-    },
-    skip: !token,
+    client: client,
   });
   return {loading, error, user: data?.user ?? null};
 };
