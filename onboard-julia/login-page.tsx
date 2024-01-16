@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import {isValidEmail, isValidPassword} from './user-validation';
 import {styles} from './styles';
-import {gql} from '@apollo/client';
-import {client} from './apollo-client';
+import {gql, useMutation} from '@apollo/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 
@@ -30,7 +29,9 @@ export function Login(): React.JSX.Element {
 
   const navigation = useNavigation();
 
-  const handleLoginPress = () => {
+  const [loginUserMutation] = useMutation(LOGIN_USER);
+
+  const handleLoginPress = async () => {
     if (!isValidEmail(email)) {
       Alert.alert('Erro', 'Por favor, insira um e-mail válido.');
       return;
@@ -51,31 +52,22 @@ export function Login(): React.JSX.Element {
 
     setLoading(true);
 
-    client
-      .mutate({
-        mutation: LOGIN_USER,
-        variables: {
-          email,
-          password,
-        },
-      })
-      .then(async response => {
-        if (response.data === null) {
-          const error = response.errors ? response.errors[0] : null;
-          if (error) {
-            console.error('GraphQL Error:', error.message);
-            Alert.alert(`GraphQL Error: ${error.message}`);
-          }
-        } else {
-          const token = response.data.login.token;
-          await AsyncStorage.setItem('authToken', token);
-          console.log('Token: ', token);
-          Alert.alert('Sucesso', 'Login efetuado com sucesso.');
-          navigation.navigate('Users List');
-        }
-      })
-      .catch(error => console.error(error))
-      .finally(() => setLoading(false));
+    try {
+      const response = await loginUserMutation({
+        variables: {email, password},
+      });
+
+      const token = response.data.login.token;
+      await AsyncStorage.setItem('authToken', token);
+      console.log('Token: ', token);
+      Alert.alert('Sucesso', 'Login efetuado com sucesso.');
+      navigation.navigate('Users List');
+    } catch (error) {
+      console.error('GraphQL Error:', error);
+      Alert.alert(`GraphQL Error: ${error}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
