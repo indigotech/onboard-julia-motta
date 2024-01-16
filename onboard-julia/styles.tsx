@@ -14,13 +14,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 15,
-    width: '80%',
-  },
   usersContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
