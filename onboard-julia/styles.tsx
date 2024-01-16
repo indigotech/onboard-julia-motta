@@ -1,4 +1,13 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, TextInputProps, TextProps} from 'react-native';
+import styled, {css} from 'styled-components/native';
+
+interface FormTextFieldProps extends TextInputProps {
+  error?: boolean;
+}
+
+interface FormTextProps extends TextProps {
+  error?: boolean;
+}
 
 export const styles = StyleSheet.create({
   container: {
@@ -11,26 +20,6 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 15,
     width: '80%',
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    marginTop: '10%',
-    marginBottom: '20%',
-  },
-  button: {
-    width: '80%',
-    backgroundColor: '#BC8F8F',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 15,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
   },
   usersContainer: {
     flexDirection: 'row',
@@ -104,3 +93,67 @@ export const styles = StyleSheet.create({
     marginLeft: 5,
   },
 });
+
+export const Title = styled.Text`
+  font-size: 24px;
+  font-weight: bold;
+  color: #000000;
+  margin-top: 20px;
+  margin-bottom: 20px;
+`;
+
+export const MyButton = styled.TouchableOpacity`
+  height: 44px;
+  background-color: #bc8f8f;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 80%;
+`;
+
+export const ButtonText = styled.Text`
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+`;
+
+export const FormLabel = styled.Text<FormTextProps>`
+  font-size: 12px;
+  font-weight: normal;
+  color: #777777;
+  margin-bottom: 12px;
+
+  ${props =>
+    props.error &&
+    css`
+      color: red;
+    `}
+`;
+
+export const FormTextField = styled.TextInput<FormTextFieldProps>`
+  border-width: 1px;
+  border-color: #777777;
+  padding: 8px;
+  width: 80%;
+  margin-bottom: 12px;
+  ${props =>
+    props.error &&
+    css`
+      border-color: red;
+    `}
+`;
+
+export const FormCaption = styled.Text<FormTextProps>`
+  font-size: 12px;
+  font-weight: normal;
+  color: red;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  ${props =>
+    !props.error &&
+    css`
+      display: none;
+    `}
+`;

@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
+import {ActivityIndicator, Alert, View} from 'react-native';
 import {
-  ActivityIndicator,
-  Alert,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {styles} from './styles';
+  ButtonText,
+  FormCaption,
+  FormLabel,
+  FormTextField,
+  MyButton,
+  Title,
+  styles,
+} from './styles';
 import {
   isValidBirthdate,
   isValidEmail,
@@ -28,38 +29,40 @@ export function AddUser(): React.JSX.Element {
   const [password, setPassword] = useState<string>('');
   const navigation = useNavigation();
   const [loading, setLoading] = useState<boolean>(false);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [nameError, setNameError] = useState(false);
+  const [phoneError, setPhoneError] = useState(false);
+  const [birthDateError, setBirthDateError] = useState(false);
 
   const handleAddUserPress = async () => {
     if (!isValidName(name)) {
-      Alert.alert('Erro', 'Por favor, insira um nome válido.');
+      setNameError(true);
       return;
     }
 
     if (!isValidEmail(email)) {
-      Alert.alert('Erro', 'Por favor, insira um e-mail válido.');
+      setEmailError(true);
       return;
     }
 
     if (!isValidPhone(phone)) {
-      Alert.alert('Erro', 'Por favor, insira um telefone válido.');
+      setPhoneError(true);
       return;
     }
 
     if (!isValidBirthdate(birthdate)) {
-      Alert.alert('Erro', 'Por favor, insira uma data de nascimento válida.');
+      setBirthDateError(true);
       return;
     }
 
     if (password.length < 7) {
-      Alert.alert('Erro', 'As senhas devem ter no mínimo 7 caracteres.');
+      setPasswordError(true);
       return;
     }
 
     if (!isValidPassword(password)) {
-      Alert.alert(
-        'Erro',
-        'As senhas devem ter no mínimo uma letra e um número',
-      );
+      setPasswordError(true);
       return;
     }
 
@@ -85,39 +88,88 @@ export function AddUser(): React.JSX.Element {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.usersTitle}>Cadastro de Usuário</Text>
+      <Title>Cadastro de Usuário</Title>
 
-      <Text>Nome</Text>
-      <TextInput style={styles.input} value={name} onChangeText={setName} />
-
-      <Text>E-mail</Text>
-      <TextInput
-        style={styles.input}
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
+      <FormLabel error={nameError}>Nome</FormLabel>
+      <FormTextField
+        value={name}
+        onChangeText={text => {
+          setName(text);
+          setNameError(false);
+        }}
+        error={nameError}
       />
+      {nameError && (
+        <FormCaption error>
+          Nome inválido. Por favor, insira um nome válido.
+        </FormCaption>
+      )}
 
-      <Text>Telefone</Text>
-      <TextInput style={styles.input} value={phone} onChangeText={setPhone} />
+      <FormLabel error={emailError}>E-mail</FormLabel>
+      <FormTextField
+        value={email}
+        onChangeText={text => {
+          setEmail(text);
+          setEmailError(false);
+        }}
+        autoCapitalize="none"
+        error={emailError}
+      />
+      {emailError && (
+        <FormCaption error>
+          Email inválido. Por favor, insira um e-mail válido.
+        </FormCaption>
+      )}
 
-      <Text>Data de Nascimento</Text>
-      <TextInput
-        style={styles.input}
+      <FormLabel error={phoneError}>Telefone</FormLabel>
+      <FormTextField
+        value={phone}
+        onChangeText={text => {
+          setPhone(text);
+          setPhoneError(false);
+        }}
+        error={phoneError}
+      />
+      {phoneError && (
+        <FormCaption error>
+          Telefone inválido. Por favor, insira um telefone válido.
+        </FormCaption>
+      )}
+
+      <FormLabel error={birthDateError}>Data de Nascimento</FormLabel>
+      <FormTextField
         placeholder="YYYY-MM-DD"
         value={birthdate}
-        onChangeText={setBirthdate}
+        onChangeText={text => {
+          setBirthdate(text);
+          setBirthDateError(false);
+        }}
+        error={birthDateError}
       />
+      {birthDateError && (
+        <FormCaption error>
+          Data de nascimento inválida. Por favor, insira uma data válida.
+        </FormCaption>
+      )}
 
-      <Text>Senha</Text>
-      <TextInput
-        style={styles.input}
+      <FormLabel error={passwordError}>Senha</FormLabel>
+      <FormTextField
         value={password}
-        onChangeText={setPassword}
+        onChangeText={text => {
+          setPassword(text);
+          setPasswordError(false);
+        }}
         secureTextEntry
+        error={passwordError}
       />
+      {passwordError && (
+        <FormCaption error>
+          A senha deve ter no mínimo 7 caracteres e conter uma letra e um
+          número.
+        </FormCaption>
+      )}
 
-      <Text>Cargo</Text>
+      <FormLabel>Cargo</FormLabel>
       <View style={styles.radioGroup}>
         <CustomRadioButton
           label="Administrador"
@@ -131,9 +183,9 @@ export function AddUser(): React.JSX.Element {
         />
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleAddUserPress}>
-        <Text style={styles.buttonText}>Adicionar Usuário</Text>
-      </TouchableOpacity>
+      <MyButton onPress={handleAddUserPress}>
+        <ButtonText>Adicionar Usuário</ButtonText>
+      </MyButton>
 
       {loading && <ActivityIndicator size="large" color="#0000ff" />}
     </View>
