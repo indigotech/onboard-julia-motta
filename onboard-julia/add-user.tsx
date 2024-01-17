@@ -1,14 +1,6 @@
 import React, {useState} from 'react';
 import {ActivityIndicator, Alert, View} from 'react-native';
-import {
-  ButtonText,
-  FormCaption,
-  FormLabel,
-  FormTextField,
-  MyButton,
-  Title,
-  styles,
-} from './styles';
+import {Title, styles} from './styles';
 import {
   isValidBirthdate,
   isValidEmail,
@@ -19,6 +11,8 @@ import {
 import {CustomRadioButton} from './custom-radio-button';
 import {useNavigation} from '@react-navigation/native';
 import {createUser} from './create-user';
+import {FormField, FormLabel} from './form-field';
+import {MyButton} from './my-button';
 
 export function AddUser(): React.JSX.Element {
   const [name, setName] = useState<string>('');
@@ -90,84 +84,63 @@ export function AddUser(): React.JSX.Element {
     <View style={styles.container}>
       <Title>Cadastro de Usuário</Title>
 
-      <FormLabel error={nameError}>Nome</FormLabel>
-      <FormTextField
+      <FormField
+        label="Nome"
         value={name}
         onChangeText={text => {
           setName(text);
           setNameError(false);
         }}
         error={nameError}
+        captionText="Nome inválido. Por favor, insira um nome válido."
       />
-      {nameError && (
-        <FormCaption error>
-          Nome inválido. Por favor, insira um nome válido.
-        </FormCaption>
-      )}
 
-      <FormLabel error={emailError}>E-mail</FormLabel>
-      <FormTextField
+      <FormField
+        label="E-mail"
         value={email}
         onChangeText={text => {
           setEmail(text);
           setEmailError(false);
         }}
-        autoCapitalize="none"
         error={emailError}
+        captionText="Email inválido. Por favor, insira um e-mail válido."
+        autoCapitalize="none"
       />
-      {emailError && (
-        <FormCaption error>
-          Email inválido. Por favor, insira um e-mail válido.
-        </FormCaption>
-      )}
 
-      <FormLabel error={phoneError}>Telefone</FormLabel>
-      <FormTextField
+      <FormField
+        label="Telefone"
         value={phone}
         onChangeText={text => {
           setPhone(text);
           setPhoneError(false);
         }}
         error={phoneError}
+        captionText="Telefone inválido. Por favor, insira um telefone válido."
       />
-      {phoneError && (
-        <FormCaption error>
-          Telefone inválido. Por favor, insira um telefone válido.
-        </FormCaption>
-      )}
 
-      <FormLabel error={birthDateError}>Data de Nascimento</FormLabel>
-      <FormTextField
-        placeholder="YYYY-MM-DD"
+      <FormField
+        label="Data de Nascimento"
         value={birthdate}
         onChangeText={text => {
           setBirthdate(text);
           setBirthDateError(false);
         }}
         error={birthDateError}
+        captionText="Data de nascimento inválida. Por favor, insira uma data válida."
       />
-      {birthDateError && (
-        <FormCaption error>
-          Data de nascimento inválida. Por favor, insira uma data válida.
-        </FormCaption>
-      )}
 
-      <FormLabel error={passwordError}>Senha</FormLabel>
-      <FormTextField
+      <FormField
+        label="Senha"
         value={password}
         onChangeText={text => {
           setPassword(text);
           setPasswordError(false);
         }}
-        secureTextEntry
         error={passwordError}
+        captionText="A senha deve ter no mínimo 7 caracteres e conter uma letra e um
+        número."
+        secureTextEntry={true}
       />
-      {passwordError && (
-        <FormCaption error>
-          A senha deve ter no mínimo 7 caracteres e conter uma letra e um
-          número.
-        </FormCaption>
-      )}
 
       <FormLabel>Cargo</FormLabel>
       <View style={styles.radioGroup}>
@@ -183,8 +156,8 @@ export function AddUser(): React.JSX.Element {
         />
       </View>
 
-      <MyButton onPress={handleAddUserPress}>
-        <ButtonText>Adicionar Usuário</ButtonText>
+      <MyButton onPress={handleAddUserPress} disabled={loading}>
+        Adicionar Usuário
       </MyButton>
 
       {loading && <ActivityIndicator size="large" color="#0000ff" />}

@@ -1,19 +1,13 @@
 import React, {useState} from 'react';
 import {isValidEmail, isValidPassword} from './user-validation';
-import {
-  MyButton,
-  ButtonText,
-  Title,
-  styles,
-  FormLabel,
-  FormTextField,
-  FormCaption,
-} from './styles';
+import {Title, styles} from './styles';
 import {gql, useMutation} from '@apollo/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 
 import {View, Alert, ActivityIndicator} from 'react-native';
+import {FormField} from './form-field';
+import {MyButton} from './my-button';
 
 const LOGIN_USER = gql`
   mutation LoginUser($email: String!, $password: String!) {
@@ -74,41 +68,33 @@ export function Login(): React.JSX.Element {
     <View style={styles.container}>
       <Title>Bem-vindo(a) à Taqtile!</Title>
 
-      <FormLabel error={emailError}>E-mail</FormLabel>
-      <FormTextField
+      <FormField
+        label="E-mail"
         value={email}
         onChangeText={text => {
           setEmail(text);
           setEmailError(false);
         }}
-        autoCapitalize="none"
         error={emailError}
+        captionText="Email inválido. Por favor, insira um e-mail válido."
+        autoCapitalize="none"
       />
-      {emailError && (
-        <FormCaption error>
-          Email inválido. Por favor, insira um e-mail válido.
-        </FormCaption>
-      )}
 
-      <FormLabel error={passwordError}>Senha</FormLabel>
-      <FormTextField
+      <FormField
+        label="Senha"
         value={password}
         onChangeText={text => {
           setPassword(text);
           setPasswordError(false);
         }}
-        secureTextEntry
         error={passwordError}
+        captionText="A senha deve ter no mínimo 7 caracteres e conter uma letra e um
+        número."
+        secureTextEntry={true}
       />
-      {passwordError && (
-        <FormCaption error>
-          A senha deve ter no mínimo 7 caracteres e conter uma letra e um
-          número.
-        </FormCaption>
-      )}
 
       <MyButton onPress={handleLoginPress} disabled={loading}>
-        <ButtonText>Entrar</ButtonText>
+        Entrar
       </MyButton>
 
       {loading && <ActivityIndicator size="large" color="#0000ff" />}
