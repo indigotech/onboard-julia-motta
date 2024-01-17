@@ -76,7 +76,7 @@ export function Login(): React.JSX.Element {
           setEmailError(false);
         }}
         error={emailError}
-        captionText="Email inválido. Por favor, insira um e-mail válido."
+        errorText="Email inválido. Por favor, insira um e-mail válido."
         autoCapitalize="none"
       />
 
@@ -88,14 +88,12 @@ export function Login(): React.JSX.Element {
           setPasswordError(false);
         }}
         error={passwordError}
-        captionText="A senha deve ter no mínimo 7 caracteres e conter uma letra e um
+        errorText="A senha deve ter no mínimo 7 caracteres e conter uma letra e um
         número."
         secureTextEntry={true}
       />
 
-      <MyButton onPress={handleLoginPress} disabled={loading}>
-        Entrar
-      </MyButton>
+      <MyButton onPress={handleLoginPress} disabled={loading} text="Entrar" />
 
       {loading && <ActivityIndicator size="large" color="#0000ff" />}
     </View>

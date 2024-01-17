@@ -2,6 +2,40 @@ import React, {FC} from 'react';
 import {TextInputProps, TextProps} from 'react-native';
 import styled, {css} from 'styled-components/native';
 
+export const FormField: FC<FormFieldProps> = ({
+  label,
+  value,
+  onChangeText,
+  error,
+  errorText,
+  autoCapitalize = 'sentences',
+  secureTextEntry = false,
+}) => {
+  return (
+    <FormContainer>
+      <FormLabel error={error}>{label}</FormLabel>
+      <FormTextField
+        value={value}
+        onChangeText={onChangeText}
+        error={error}
+        autoCapitalize={autoCapitalize}
+        secureTextEntry={secureTextEntry}
+      />
+      {error && <FormCaption error>{errorText}</FormCaption>}
+    </FormContainer>
+  );
+};
+
+interface FormFieldProps {
+  label: string;
+  value: string;
+  onChangeText: (text: string) => void;
+  error: boolean;
+  errorText: string;
+  autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
+  secureTextEntry?: boolean;
+}
+
 interface FormTextFieldProps extends TextInputProps {
   error?: boolean;
 }
@@ -49,37 +83,3 @@ const FormCaption = styled.Text<FormTextProps>`
   margin-bottom: 8px;
   text-align: justify;
 `;
-
-interface FormFieldProps {
-  label: string;
-  value: string;
-  onChangeText: (text: string) => void;
-  error: boolean;
-  captionText: string;
-  autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
-  secureTextEntry?: boolean;
-}
-
-export const FormField: FC<FormFieldProps> = ({
-  label,
-  value,
-  onChangeText,
-  error,
-  captionText,
-  autoCapitalize = 'sentences',
-  secureTextEntry = false,
-}) => {
-  return (
-    <FormContainer>
-      <FormLabel error={error}>{label}</FormLabel>
-      <FormTextField
-        value={value}
-        onChangeText={onChangeText}
-        error={error}
-        autoCapitalize={autoCapitalize}
-        secureTextEntry={secureTextEntry}
-      />
-      {error && <FormCaption error>{captionText}</FormCaption>}
-    </FormContainer>
-  );
-};

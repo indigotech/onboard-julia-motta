@@ -92,7 +92,7 @@ export function AddUser(): React.JSX.Element {
           setNameError(false);
         }}
         error={nameError}
-        captionText="Nome inválido. Por favor, insira um nome válido."
+        errorText="Nome inválido. Por favor, insira um nome válido."
       />
 
       <FormField
@@ -103,7 +103,7 @@ export function AddUser(): React.JSX.Element {
           setEmailError(false);
         }}
         error={emailError}
-        captionText="Email inválido. Por favor, insira um e-mail válido."
+        errorText="Email inválido. Por favor, insira um e-mail válido."
         autoCapitalize="none"
       />
 
@@ -115,7 +115,7 @@ export function AddUser(): React.JSX.Element {
           setPhoneError(false);
         }}
         error={phoneError}
-        captionText="Telefone inválido. Por favor, insira um telefone válido."
+        errorText="Telefone inválido. Por favor, insira um telefone válido."
       />
 
       <FormField
@@ -126,7 +126,7 @@ export function AddUser(): React.JSX.Element {
           setBirthDateError(false);
         }}
         error={birthDateError}
-        captionText="Data de nascimento inválida. Por favor, insira uma data válida."
+        errorText="Data de nascimento inválida. Por favor, insira uma data válida."
       />
 
       <FormField
@@ -137,7 +137,7 @@ export function AddUser(): React.JSX.Element {
           setPasswordError(false);
         }}
         error={passwordError}
-        captionText="A senha deve ter no mínimo 7 caracteres e conter uma letra e um
+        errorText="A senha deve ter no mínimo 7 caracteres e conter uma letra e um
         número."
         secureTextEntry={true}
       />
@@ -156,9 +156,11 @@ export function AddUser(): React.JSX.Element {
         />
       </View>
 
-      <MyButton onPress={handleAddUserPress} disabled={loading}>
-        Adicionar Usuário
-      </MyButton>
+      <MyButton
+        onPress={handleAddUserPress}
+        disabled={loading}
+        text="Adicionar Usuário"
+      />
 
       {loading && <ActivityIndicator size="large" color="#0000ff" />}
     </View>

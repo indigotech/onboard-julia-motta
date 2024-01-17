@@ -3,8 +3,16 @@ import {FC} from 'react';
 import {TouchableOpacityProps} from 'react-native';
 import styled from 'styled-components/native';
 
+export const MyButton: FC<MyButtonProps> = ({text, onPress, disabled}) => {
+  return (
+    <MyButtonWrapper onPress={onPress} disabled={disabled}>
+      <ButtonText>{text}</ButtonText>
+    </MyButtonWrapper>
+  );
+};
 interface MyButtonProps extends TouchableOpacityProps {
   disabled?: boolean;
+  text: string;
 }
 
 const MyButtonWrapper = styled.TouchableOpacity`
@@ -23,11 +31,3 @@ const ButtonText = styled.Text`
   font-weight: bold;
   color: #ffffff;
 `;
-
-export const MyButton: FC<MyButtonProps> = ({children, onPress, disabled}) => {
-  return (
-    <MyButtonWrapper onPress={onPress} disabled={disabled}>
-      <ButtonText>{children}</ButtonText>
-    </MyButtonWrapper>
-  );
-};
