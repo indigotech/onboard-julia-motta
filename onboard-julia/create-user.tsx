@@ -1,5 +1,4 @@
 import {gql} from '@apollo/client';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {client} from './apollo-client';
 
 interface UserInput {
@@ -20,18 +19,11 @@ const CREATE_USER = gql`
 `;
 
 export const createUser = async (userInput: UserInput) => {
-  const token = await AsyncStorage.getItem('authToken');
-
   try {
     const {data} = await client.mutate({
       mutation: CREATE_USER,
       variables: {
         userInput: userInput,
-      },
-      context: {
-        headers: {
-          authorization: token,
-        },
       },
     });
     return data?.createUser?.id ?? null;

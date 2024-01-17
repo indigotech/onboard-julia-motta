@@ -1,5 +1,4 @@
 import {gql} from '@apollo/client';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {client} from './apollo-client';
 
 const GET_USERS = gql`
@@ -20,18 +19,11 @@ const GET_USERS = gql`
 `;
 
 export const getUsersList = async (offset: number) => {
-  const token = await AsyncStorage.getItem('authToken');
-
   try {
     const {data} = await client.query({
       query: GET_USERS,
       variables: {
         offset: offset,
-      },
-      context: {
-        headers: {
-          authorization: token,
-        },
       },
     });
 
