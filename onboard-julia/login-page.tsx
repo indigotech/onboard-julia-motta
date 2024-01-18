@@ -1,18 +1,13 @@
 import React, {useState} from 'react';
 import {isValidEmail, isValidPassword} from './user-validation';
-import {styles} from './styles';
+import {Title, styles} from './styles';
 import {gql, useMutation} from '@apollo/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-  ActivityIndicator,
-} from 'react-native';
+import {View, Alert, ActivityIndicator} from 'react-native';
+import {FormField} from './form-field';
+import {MyButton} from './my-button';
 
 const LOGIN_USER = gql`
   mutation LoginUser($email: String!, $password: String!) {
@@ -30,23 +25,22 @@ export function Login(): React.JSX.Element {
   const navigation = useNavigation();
 
   const [loginUserMutation] = useMutation(LOGIN_USER);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
   const handleLoginPress = async () => {
     if (!isValidEmail(email)) {
-      Alert.alert('Erro', 'Por favor, insira um e-mail válido.');
+      setEmailError(true);
       return;
     }
 
     if (password.length < 7) {
-      Alert.alert('Erro', 'As senhas devem ter no mínimo 7 caracteres.');
+      setPasswordError(true);
       return;
     }
 
     if (!isValidPassword(password)) {
-      Alert.alert(
-        'Erro',
-        'As senhas devem ter no mínimo uma letra e um número',
-      );
+      setPasswordError(true);
       return;
     }
 
@@ -72,30 +66,34 @@ export function Login(): React.JSX.Element {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Bem-vindo(a) à Taqtile!</Text>
+      <Title>Bem-vindo(a) à Taqtile!</Title>
 
-      <Text>E-mail</Text>
-      <TextInput
-        style={styles.input}
+      <FormField
+        label="E-mail"
         value={email}
-        onChangeText={setEmail}
+        onChangeText={text => {
+          setEmail(text);
+          setEmailError(false);
+        }}
+        error={emailError}
+        errorText="Email inválido. Por favor, insira um e-mail válido."
         autoCapitalize="none"
       />
 
-      <Text>Senha</Text>
-      <TextInput
-        style={styles.input}
+      <FormField
+        label="Senha"
         value={password}
-        onChangeText={setPassword}
-        secureTextEntry
+        onChangeText={text => {
+          setPassword(text);
+          setPasswordError(false);
+        }}
+        error={passwordError}
+        errorText="A senha deve ter no mínimo 7 caracteres e conter uma letra e um
+        número."
+        secureTextEntry={true}
       />
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={handleLoginPress}
-        disabled={loading}>
-        <Text style={styles.buttonText}>Entrar</Text>
-      </TouchableOpacity>
+      <MyButton onPress={handleLoginPress} disabled={loading} text="Entrar" />
 
       {loading && <ActivityIndicator size="large" color="#0000ff" />}
     </View>
